@@ -23,7 +23,8 @@ struct AddTaskView: View {
                 
                 let newTask = Task(
                     title: title,
-                    description: description
+                    description: description,
+                    isCompleted: false
                 )
                 
                 tasks.append(newTask)
