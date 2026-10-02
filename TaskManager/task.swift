@@ -6,6 +6,7 @@ struct Task: Identifiable {
     var description: String
     var isCompleted: Bool
     var priority: Priority
+    var createdAt: Date
 }
 
 enum Priority{

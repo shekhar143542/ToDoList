@@ -38,7 +38,8 @@ struct AddTaskView: View {
                     title: title,
                     description: description,
                     isCompleted: false,
-                    priority: priority
+                    priority: priority,
+                    createdAt: Date()
                 )
                 
                 tasks.append(newTask)

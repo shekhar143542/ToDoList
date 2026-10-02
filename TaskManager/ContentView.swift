@@ -7,13 +7,15 @@ struct ContentView: View {
             title: "Learn Swift",
             description: "Learn SwiftUI basics",
             isCompleted: false,
-            priority: .low
+            priority: .low,
+            createdAt: Date()
         ),
         Task(
             title: "Build Todo App",
             description: "Build the first version",
             isCompleted: false,
-            priority: .medium
+            priority: .medium,
+            createdAt: Date()
         )
     ]
     
@@ -76,28 +78,40 @@ struct ContentView: View {
 
                                     Text(tasks[index].description)
                                         .font(.subheadline)
-                            Text(tasks[index].isCompleted
-                                 ? "Completed":"Pending")
-                                    .font(.caption)
-                                    .foregroundStyle(
-                                        tasks[index].isCompleted
-                                        ? .green
-                                        : .red
-                                    )
+                                    Text(tasks[index].isCompleted
+                                         ? "Completed":"Pending")
+                                        .font(.caption)
+                                        .foregroundStyle(
+                                            tasks[index].isCompleted
+                                            ? .green
+                                            : .red
+                                        )
                                 }
+                                
                                 Spacer()
                                 
-                                Text(tasks[index].priority == .high ?"High":tasks[index].priority == .medium ? "Medium" : "Low"
-                                )
-                                .font(.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(
-                                    tasks[index].priority == .high
-                                        ? .red
-                                        : tasks[index].priority == .medium
-                                            ? .yellow
-                                            : .green
-                                )
+                                VStack(alignment: .trailing, spacing: 4) {
+                                    Text(
+                                        tasks[index].priority == .high ? "High" :
+                                        tasks[index].priority == .medium ? "Medium" :
+                                        tasks[index].priority == .low ? "Low" : "None"
+                                    )
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(
+                                        tasks[index].priority == .high
+                                            ? .red
+                                            : tasks[index].priority == .medium
+                                                ? .yellow
+                                                : tasks[index].priority == .low
+                                                    ? .green
+                                                    : .gray
+                                    )
+                                    
+                                    Text(tasks[index].createdAt.formatted(date: .numeric, time: .shortened))
+                                        .font(.caption2)
+                                        .foregroundStyle(.gray)
+                                }
                             }
                         }
                         .onDelete { indexSet in
