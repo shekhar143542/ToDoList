@@ -5,4 +5,12 @@ struct Task: Identifiable {
     var title: String
     var description: String
     var isCompleted: Bool
+    var priority: Priority
+}
+
+enum Priority{
+    case high
+    case low
+    case medium
+    case None
 }

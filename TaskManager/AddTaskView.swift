@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct AddTaskView: View {
@@ -7,11 +6,12 @@ struct AddTaskView: View {
     
     @State private var title = ""
     @State private var description = ""
+    @State private var priority: Priority = .None
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 20) {
             
             TextField("Task title", text: $title)
                 .textFieldStyle(.roundedBorder)
@@ -19,21 +19,39 @@ struct AddTaskView: View {
             TextField("Description", text: $description)
                 .textFieldStyle(.roundedBorder)
             
-            Button("Save") {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Priority")
+                    .font(.headline)
                 
+                Picker("Priority", selection: $priority) {
+                    Text("Low").tag(Priority.low)
+                    Text("Medium").tag(Priority.medium)
+                    Text("High").tag(Priority.high)
+                    Text("None").tag(Priority.None)
+                }
+                .pickerStyle(.menu)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Button(action: {
                 let newTask = Task(
                     title: title,
                     description: description,
-                    isCompleted: false
+                    isCompleted: false,
+                    priority: priority
                 )
                 
                 tasks.append(newTask)
-                
                 dismiss()
+            }) {
+                Text("Save")
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.borderedProminent)
+            
+            Spacer()
         }
         .padding()
         .navigationTitle("Add Task")
     }
 }
-

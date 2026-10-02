@@ -6,16 +6,37 @@ struct ContentView: View {
         Task(
             title: "Learn Swift",
             description: "Learn SwiftUI basics",
-            isCompleted: false
+            isCompleted: false,
+            priority: .low
         ),
         Task(
             title: "Build Todo App",
             description: "Build the first version",
-            isCompleted: false
+            isCompleted: false,
+            priority: .medium
         )
     ]
     
+    private func sortTasks() {
+        tasks.sort {
+            if $0.priority == .high {
+                return true
+            }
+
+            if $1.priority == .high {
+                return false
+            }
+
+            if $0.priority == .medium {
+                return true
+            }
+
+            return false
+        }
+    }
+    
     var body: some View {
+        
         NavigationStack {
             Group {
                 if tasks.isEmpty {
@@ -64,6 +85,19 @@ struct ContentView: View {
                                         : .red
                                     )
                                 }
+                                Spacer()
+                                
+                                Text(tasks[index].priority == .high ?"High":tasks[index].priority == .medium ? "Medium" : "Low"
+                                )
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(
+                                    tasks[index].priority == .high
+                                        ? .red
+                                        : tasks[index].priority == .medium
+                                            ? .yellow
+                                            : .green
+                                )
                             }
                         }
                         .onDelete { indexSet in
@@ -77,6 +111,9 @@ struct ContentView: View {
                 NavigationLink("Add") {
                     AddTaskView(tasks: $tasks)
                 }
+            }
+            .onAppear {
+                sortTasks()
             }
         }
     }
