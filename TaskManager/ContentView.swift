@@ -8,14 +8,16 @@ struct ContentView: View {
             description: "Learn SwiftUI basics",
             isCompleted: false,
             priority: .low,
-            createdAt: Date()
+            createdAt: Date(),
+            imageData: nil
         ),
         Task(
             title: "Build Todo App",
             description: "Build the first version",
             isCompleted: false,
             priority: .medium,
-            createdAt: Date()
+            createdAt: Date(),
+            imageData: nil
         )
     ]
     
@@ -38,7 +40,6 @@ struct ContentView: View {
     }
     
     var body: some View {
-        
         NavigationStack {
             Group {
                 if tasks.isEmpty {
@@ -72,45 +73,42 @@ struct ContentView: View {
                                 }
                                 .buttonStyle(.plain)
 
-                                VStack(alignment: .leading) {
-                                    Text(tasks[index].title)
-                                        .font(.headline)
+                                NavigationLink(destination: TaskDetailView(task: tasks[index])) {
+                                    VStack(alignment: .leading) {
+                                        Text(tasks[index].title)
+                                            .font(.headline)
 
-                                    Text(tasks[index].description)
-                                        .font(.subheadline)
-                                    Text(tasks[index].isCompleted
-                                         ? "Completed":"Pending")
-                                        .font(.caption)
-                                        .foregroundStyle(
-                                            tasks[index].isCompleted
-                                            ? .green
-                                            : .red
-                                        )
-                                }
-                                
-                                Spacer()
-                                
-                                VStack(alignment: .trailing, spacing: 4) {
-                                    Text(
-                                        tasks[index].priority == .high ? "High" :
-                                        tasks[index].priority == .medium ? "Medium" :
-                                        tasks[index].priority == .low ? "Low" : "None"
-                                    )
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(
-                                        tasks[index].priority == .high
-                                            ? .red
-                                            : tasks[index].priority == .medium
-                                                ? .yellow
-                                                : tasks[index].priority == .low
-                                                    ? .green
-                                                    : .gray
-                                    )
+                                        Text(tasks[index].description)
+                                            .font(.subheadline)
+                                            .lineLimit(1)
+
+                                        Text(tasks[index].isCompleted ? "Completed" : "Pending")
+                                            .font(.caption)
+                                            .foregroundStyle(
+                                                tasks[index].isCompleted ? .green : .red
+                                            )
+                                    }
                                     
-                                    Text(tasks[index].createdAt.formatted(date: .numeric, time: .shortened))
-                                        .font(.caption2)
-                                        .foregroundStyle(.gray)
+                                    Spacer()
+                                    
+                                    VStack(alignment: .trailing, spacing: 4) {
+                                        Text(
+                                            tasks[index].priority == .high ? "High" :
+                                            tasks[index].priority == .medium ? "Medium" :
+                                            tasks[index].priority == .low ? "Low" : "None"
+                                        )
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(
+                                            tasks[index].priority == .high ? .red :
+                                            tasks[index].priority == .medium ? .yellow :
+                                            tasks[index].priority == .low ? .green : .gray
+                                        )
+                                        
+                                        Text(tasks[index].createdAt.formatted(date: .numeric, time: .shortened))
+                                            .font(.caption2)
+                                            .foregroundStyle(.gray)
+                                    }
                                 }
                             }
                         }

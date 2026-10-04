@@ -7,9 +7,10 @@ struct Task: Identifiable {
     var isCompleted: Bool
     var priority: Priority
     var createdAt: Date
+    var imageData: Data?
 }
 
-enum Priority{
+enum Priority {
     case high
     case low
     case medium

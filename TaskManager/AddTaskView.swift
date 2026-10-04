@@ -1,4 +1,6 @@
 import SwiftUI
+import PhotosUI
+import UIKit
 
 struct AddTaskView: View {
     
@@ -7,6 +9,8 @@ struct AddTaskView: View {
     @State private var title = ""
     @State private var description = ""
     @State private var priority: Priority = .None
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var imageData: Data?
     
     @Environment(\.dismiss) private var dismiss
     
@@ -33,13 +37,37 @@ struct AddTaskView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
+            PhotosPicker(
+                selection: $selectedPhoto,
+                matching: .images
+            ) {
+                Label("Choose Image", systemImage: "photo")
+            }
+            .onChange(of: selectedPhoto) {
+                Swift.Task {
+                    if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
+                        imageData = data
+                    }
+                }
+            }
+            
+            if let imageData = imageData,
+               let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 150)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            
             Button(action: {
                 let newTask = Task(
                     title: title,
                     description: description,
                     isCompleted: false,
                     priority: priority,
-                    createdAt: Date()
+                    createdAt: Date(),
+                    imageData: imageData
                 )
                 
                 tasks.append(newTask)
